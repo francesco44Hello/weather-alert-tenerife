@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# 🌊 Boca Cangrejo Sentinel: Barranco Early Warning System
 
-First, run the development server:
+A real-time monitoring and alerting system designed to protect homes in **Boca Cangrejo, Tenerife**, from sudden mountain runoff (barrancos) caused by heavy rain in the upper elevations of **El Rosario**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📌 The Problem: A Tale of Two Microclimates
+Tenerife is famous for its **15+ microclimates**. In the coastal village of **Boca Cangrejo**, the sky can be perfectly clear and the sea calm, making it impossible to tell that it is pouring rain just a few kilometers uphill in **El Rosario**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+When it rains heavily in the mountains, a massive stream of water (the barranco) descends toward the coast. For locals, safety depends on a manual task: **inserting a protective wooden barrier** into their doorframes to block the water from entering their homes. Usually, by the time you see the water, it’s too late.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 The Solution
+This project automates the "watchman" role. By monitoring weather data at the mountain source, the system provides a **15-minute head start**, sending a high-priority alert to residents before the water reaches the coast.
 
-## Learn More
+### Technical Architecture
+* **Data Source:** OpenWeather API monitoring precise Lat/Lon coordinates in the El Rosario catchment area.
+* **Backend:** Google Cloud Functions (Firebase) running on a **15-minute cron schedule**.
+* **Database:** Firestore (NoSQL) stores the real-time status and rain precipitation levels.
+* **Alerting:** A private **Telegram Bot** that pushes "Siren" notifications directly to the user's phone.
+* **Dashboard:** A **Next.js 14** web application that turns bright red when danger is detected, serving as a visual "Status Board" for the household.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Tech Stack
+| Layer | Technology |
+| :--- | :--- |
+| **Frontend** | Next.js (App Router), Tailwind CSS, TypeScript |
+| **Backend** | Firebase Functions (Node.js) |
+| **Database** | Google Firestore |
+| **Automation** | Google Cloud Scheduler |
+| **Security** | Google Secret Manager & GitHub Branch Protection |
+| **Alerting** | Telegram Bot API |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🔒 Security & Professional Workflow
+This repository follows industry-standard engineering practices:
+* **Zero-Trust Secrets:** All API keys and Bot Tokens are stored in **Google Secret Manager**, never hardcoded or stored in the repository.
+* **Branch Protection:** The `main` branch is protected. All updates are made via **Feature Branches** and **Pull Requests** to ensure code quality.
+* **Firestore Security Rules:** Locked-down rules ensure only the authorized Cloud Function (Admin SDK) can update the alert status, while the public can only read it.
+* **CI/CD Mindset:** Environment variables are managed via `.env` files and Git-ignored to prevent credential leaks.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📖 How it Works
+1.  **The Watcher:** Every 15 minutes, a Cloud Function pings the mountains.
+2.  **The Logic:** If precipitation exceeds the safety threshold (e.g., >2.0mm/h), the state is set to `isDanger: true`.
+3.  **The Alarm:** The function pushes a Telegram message: *"🚨 BARRANCO ALERT! Rain in El Rosario: 3.5mm/h. Put the wood in!"*
+4.  **The UI:** The dashboard (deployed on Firebase Hosting) updates instantly via a real-time snapshot listener, providing a constant visual reference for the household.
+
+---
+
+## 👤 Author
+**Francesco Longo** *Software Developer & Tenerife Resident*
+
+*Project born out of local necessity and powered by modern cloud infrastructure.*
