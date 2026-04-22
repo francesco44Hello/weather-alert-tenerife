@@ -4,8 +4,8 @@ const axios = require("axios");
 
 admin.initializeApp();
 
-const LAT = 28.4325; 
-const LON = -16.3644;
+const LAT = 28.415332; 
+const LON = -16.322683;
 const THRESHOLD = 2;
 
 exports.checkElRosarioWeather = onSchedule({
